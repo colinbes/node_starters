@@ -1,15 +1,19 @@
+import express from 'express'
+import bodyParser from 'body-parser'
 import path from 'path'
-import express = require('express')
 
-// Create a new express application instance
 const app = express()
+var api = require('./routes/api')
 
-// app.get('/', function (req, res) {
-//   res.send('Hello World!')
-// })
 const publicPath = path.resolve(__dirname, '../build')
 const staticConf = { maxAge: '1y', etag: false }
 app.use(express.static(publicPath, staticConf))
+
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
+
+app.use('/api', api)
 
 app.get('/', function (req: any, res: any) {
   res.sendFile(path.join(__dirname, '/index.html'))
